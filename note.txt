@@ -1,0 +1,7 @@
+generated proto file will be ignored when pushing to git
+compile proto/*.proto to this directory with command:
+
+python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/*.proto
+
+TODO
+- change directory to src/generated (caused wrong file import in generated file)

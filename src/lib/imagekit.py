@@ -21,7 +21,7 @@ class Upload:
         self,
         url: str | List[int],
         filename: str,
-        opts: UpdateFileRequestOptions | None
+        opts: UpdateFileRequestOptions | None = None
     ) -> UploadFileResult:
         return self.client.upload(file=url, file_name=filename, options=opts)
 

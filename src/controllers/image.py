@@ -1,8 +1,9 @@
 from grpc import ServicerContext, RpcError, StatusCode
-from image_pb2 import UploadFileResult
+from image_pb2 import UploadFileResult, Message
 from src.helpers.file import check_file_ext, check_file_size
 from src.lib.imagekit import Upload
 from image_pb2_grpc import ImageServicer
+from imagekitio.client import UpdateFileRequestOptions
 
 
 class ImageService(ImageServicer):
@@ -11,7 +12,10 @@ class ImageService(ImageServicer):
         self.upload_service = upload_lib
 
     def UploadImg(self, request, context: ServicerContext):
-        if not check_file_size(request.size):
+        if request.content == "" or request.content is None or request.filename == "" or request.filename is None or request.folder == "" or request.folder is None:
+            raise RpcError(StatusCode.INVALID_ARGUMENT, "invalid parameter")
+
+        if not check_file_size(len(request.content)):
             raise RpcError(
                 StatusCode.INVALID_ARGUMENT,
                 "maximum file size upload"
@@ -24,8 +28,21 @@ class ImageService(ImageServicer):
                 "unsupported file extension"
             )
 
+        opts = UpdateFileRequestOptions()
+        opts.folder = request.folder
         resp = self.upload_service.upload_file(
-            request.content, fileType + "/" + request.filename
+            request.content, request.filename, opts
         )
 
-        return UploadFileResult(file_id=resp.file_id, name=resp.name, url=resp.url)
+        return UploadFileResult(file_id=resp.file_id, name=resp.name, url=resp.url, content_type=fileType)
+
+    def DeleteFile(self, request, context: ServicerContext):
+        if request.file_id == None or request.file_id == "":
+            raise RpcError(
+                StatusCode.INVALID_ARGUMENT,
+                "no file_id provided"
+            )
+
+        self.upload_service.delete_file(request.file_id)
+
+        return Message(message='success')

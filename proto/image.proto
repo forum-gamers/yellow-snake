@@ -4,18 +4,26 @@ package image;
 
 service Image {
   rpc UploadImg(FileHeader) returns (UploadFileResult) {}
+  rpc DeleteFile(DeleteFileInput) returns (Message) {}
 }
 
 message FileHeader {
   string filename = 1;
-  string contentType = 2;
-  uint64 size = 3;
-  repeated string header = 4;
-  bytes content = 5;
+  string folder = 2;
+  string content = 3;
 }
 
 message UploadFileResult {
   string file_id = 1;
   string name = 2;
   string url = 3;
+  string content_type = 4;
+}
+
+message DeleteFileInput {
+  string file_id = 1;
+}
+
+message Message {
+  string message = 1;
 }

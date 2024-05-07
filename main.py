@@ -2,10 +2,12 @@ import grpc
 import image_pb2_grpc as grpcImageService
 from src.controllers.image import ImageService
 from src.lib.imagekit import Upload
+import concurrent.futures
 
 
 def serve():
-    server = grpc.server(thread_pool=10)
+    server = grpc.server(
+        thread_pool=concurrent.futures.ThreadPoolExecutor(max_workers=10))
     upload = Upload()
     grpcImageService.add_ImageServicer_to_server(
         ImageService(upload_lib=upload), server)

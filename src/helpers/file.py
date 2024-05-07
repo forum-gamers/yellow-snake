@@ -1,4 +1,6 @@
 import os
+import io
+from typing import Union, ByteString
 
 
 def check_file_ext(filename: str) -> str | None:
@@ -17,3 +19,7 @@ def check_file_ext(filename: str) -> str | None:
 
 def check_file_size(size: int) -> bool:
     return size < 10 * 1024 * 1024
+
+
+def create_temp_file(buffer: Union[bytes, ByteString]):
+    return io.BytesIO(buffer)

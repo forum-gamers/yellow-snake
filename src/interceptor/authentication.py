@@ -1,5 +1,4 @@
-from grpc import ServerInterceptor, StatusCode, RpcError, unary_unary_rpc_method_handler
-import os
+from grpc import ServerInterceptor, StatusCode, unary_unary_rpc_method_handler
 from src.helpers.jwt import verify_token
 
 

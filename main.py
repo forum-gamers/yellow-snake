@@ -5,6 +5,7 @@ from src.lib.imagekit import Upload
 import concurrent.futures
 from src.interceptor.logging import Logging
 from src.interceptor.authentication import Authentication
+import logging
 
 
 def serve():
@@ -28,4 +29,5 @@ def serve():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     serve()

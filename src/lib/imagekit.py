@@ -30,3 +30,7 @@ class Upload:
 
     def bulk_delete_file(self, file_ids: List[str]) -> BulkDeleteFileResult:
         return self.client.bulk_file_delete(file_ids)
+
+    def bulk_upload_file(self, files, opts: UpdateFileRequestOptions | None = None):
+        return [self.client.upload(
+            file=file['url'], file_name=file['file_name'], options=opts) for file in files]

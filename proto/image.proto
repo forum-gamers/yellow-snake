@@ -5,6 +5,7 @@ package image;
 service Image {
   rpc UploadImg(FileHeader) returns (UploadFileResult) {}
   rpc DeleteFile(DeleteFileInput) returns (Message) {}
+  rpc BulkUpload(MultipleFileHeader) returns (MultipleUploadFileResult) {}
 }
 
 message FileHeader {
@@ -26,4 +27,18 @@ message DeleteFileInput {
 
 message Message {
   string message = 1;
+}
+
+message FileHeaderWithoutFolder {
+  string filename = 1;
+  string content = 2;
+}
+
+message MultipleFileHeader {
+  repeated FileHeaderWithoutFolder files = 1;
+  string folder = 2;
+}
+
+message MultipleUploadFileResult {
+  repeated UploadFileResult datas = 1;
 }

@@ -79,3 +79,14 @@ class ImageService(ImageServicer):
             for data in datas
         ]
         return MultipleUploadFileResult(datas=results)
+
+    def BulkDeleteFile(self, request, context: ServicerContext):
+        if len(request.file_ids) < 1:
+            raise RpcError(
+                StatusCode.INVALID_ARGUMENT,
+                "no file_ids provided"
+            )
+
+        self.upload_service.bulk_delete_file(file_ids=request.file_ids)
+
+        return Message(message='success')

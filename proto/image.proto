@@ -6,6 +6,7 @@ service Image {
   rpc UploadImg(FileHeader) returns (UploadFileResult) {}
   rpc DeleteFile(DeleteFileInput) returns (Message) {}
   rpc BulkUpload(MultipleFileHeader) returns (MultipleUploadFileResult) {}
+  rpc BulkDeleteFile(MultipleFileIdInput) returns (Message) {}
 }
 
 message FileHeader {
@@ -23,6 +24,10 @@ message UploadFileResult {
 
 message DeleteFileInput {
   string file_id = 1;
+}
+
+message MultipleFileIdInput {
+  repeated string file_ids = 1;
 }
 
 message Message {

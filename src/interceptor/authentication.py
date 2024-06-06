@@ -13,14 +13,14 @@ class Authentication(ServerInterceptor):
             metadata = dict(handler_call_details.invocation_metadata)
             access_token = metadata.get("access_token", [])
             if access_token is None or access_token == "":
-                raise
+                raise ValueError("missing or invalid token")
 
             claim = verify_token(access_token)
-            newMeta = tuple(
-                handler_call_details.invocation_metadata) + (('user', claim))
+            new_meta = tuple(
+                handler_call_details.invocation_metadata) + ('user', claim)
 
-            return continuation(handler_call_details._replace(invocation_metadata=newMeta))
-        except:
+            return continuation(handler_call_details._replace(invocation_metadata=new_meta))
+        except Exception:
             return self.terminator
 
     @staticmethod
